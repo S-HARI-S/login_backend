@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Registration</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="./css/main.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap" rel="stylesheet">
+
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			$("#form1").submit(function (event) {
+				event.preventDefault();
+
+				$.ajax({
+					type: 'POST',
+					url: '/',
+					data: $('#form1').serialize(),
+					dataType: "json",
+					success: function (response) {
+						$('#form1')[0].reset();
+
+						document.getElementById("check").innerHTML = response.Success;
+						//ADD THIS CODE
+						setTimeout(function () {
+							document.getElementById("check").innerHTML = "";
+						}, 3000);
+						if (response.Success == "You are regestered,You can login now.") {
+							document.getElementById("aa").click();
+						};
+					},
+					error: function () {
+					}
+				})
+			});
+		});
+	</script>
+</head>
+
+<body>
+
+
+
+	<div class="container" style="position: absolute; margin-left: 0;">
+		<div class="half1" style=" margin-left: 0; ">
+			<div class="col-md-4 col-md-offset-4" style=" left: -9vw; width: 50%;">
+				<div class="dev">
+					<h1 style="font-size:6vw; font-family: 'Zen Dots', cursive;">DevDeck</h1>
+				</div>
+				<div>
+					<span>
+						<p>Register as StartUps</p>Login as invester instead : <button id="connectButton"
+							onclick="connect()">Login</button>
+					</span>
+
+					</p>
+				</div>
+				<div class="form-group">
+					<form id="form1" method="post">
+						<input type="email" name="email" placeholder="E-mail" required="" class="form-control"><br />
+						<input type="text" name="username" placeholder="Username" required=""
+							class="form-control"><br />
+						<input type="password" name="password" placeholder="Password" required=""
+							class="form-control"><br />
+						<input type="password" name="passwordConf" placeholder="Confirm Password" required=""
+							class="form-control"><br />
+						<input type="submit" value="Register" class="btn btn-success">
+					</form>
+				</div>
+
+				<div class="mssg bg-danger">
+					<span id="check"></span>
+				</div>
+				<div>
+					<span>Already Registered! <a href="/login">Login</a></span>
+				</div>
+				<div id="LangTable"><a href="/login" id="aa"></a>
+				</div>
+			</div>
+		</div>
+		<div class="half2">
+
+			<img src="./Jan-Business_report_1.jpg" alt="">
+		</div>
+
+	</div>
+
+
+</body>
+<script>
+	async function connect() {
+		if (typeof window.ethereum !== "undefined") {
+			try {
+				await ethereum.request({ method: "eth_requestAccounts" });
+			} catch (error) {
+				console.log(error);
+			}
+			connectButton.innerHTML = "Connected";
+			const accounts = await ethereum.request({ method: "eth_accounts" });
+			console.log(accounts);
+		} else {
+			connectButton.innerHTML = "Please install MetaMask";
+		}
+	}</script>
+
+</html>
